@@ -39,4 +39,4 @@ honeycomb_shear_modulus_width = [psiToPa(31e3) psiToPa(35e3) psiToPa(10e3)];
 % Finding constants
 honeycomb_relative_density = honeycomb_density ./ honeycomb_solid_density;
 honeycomb_constant_axial_stress = (honeycomb_shear_strength_length ./ honeycomb_solid_yield) ./ honeycomb_relative_density;
-honeycomb_constant_transverse_stress = (honeycomb_shear_strength_width ./ honeycomb_solid_yield) ./ honeycomb_relative_density;
+honeycomb_constant_transverse_stress = (honeycomb_shear_strength_width ./ honeycomb_solid_yield) ./ (honeycomb_relative_density) .^ 1.5;
