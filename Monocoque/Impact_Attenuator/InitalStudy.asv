@@ -1,0 +1,7 @@
+clear
+clc
+
+%% Honeycomb
+
+% Aluminium
+sigma_Y_solid_Al6061 = 310e6;   %MPa at 24
