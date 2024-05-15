@@ -101,4 +101,7 @@ plot([-z,x],[y,0],'b')
 % Turning radius representation AWS
 plot([-z,x/2],[y,l/2],'b')
 
+% Centre line steering representation
+plot([-3,2],[y,y])
+
 hold off
