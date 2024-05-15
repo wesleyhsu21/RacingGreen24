@@ -43,3 +43,4 @@ Safety_Factor_Energy_Absorption = 1.5;
 Required_Energy_Absorption = 7350;% Energy in J
 theta_honeycomb = 30;% Degrees
 epsilon_d = log(1 / 1 + 2 * sind(theta_honeycomb));
+g = 9.81;% ms^-2
