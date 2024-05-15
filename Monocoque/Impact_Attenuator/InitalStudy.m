@@ -24,7 +24,7 @@ nu_solid_Al3003 = 0.33;             % Poisson Ratio
 % Type 1,2,3 refers to 3.2mm,6.4mm,19.1mm cell sizes
 % Data included
 honeycomb_density = [72.1 83.3 28.8];
-honeycomb_cellsize = [3.2 6.4 19.1];
+honeycomb_cellsize = [3.2e-3 6.4e-3 19.1e-3];
 honeycomb_solid_density = [rho_solid_Al5052 rho_solid_Al3003 rho_solid_Al3003];
 honeycomb_solid_yield = [sigma_Y_solid_Al5052 sigma_Y_solid_Al3003 sigma_Y_solid_Al3003];
 honeycomb_series = [5052 3003 3003];
@@ -42,9 +42,27 @@ honeycomb_shear_modulus_width = [psiToPa(31e3) psiToPa(35e3) psiToPa(10e3)];
 Safety_Factor_Energy_Absorption = 1.5;
 Safety_Factor_Avg_Deccel = 1.2;
 Safety_Factor_Max_Deccel = 1.1;
-Required_Energy_Absorption = 7350;% Energy in J
-theta_honeycomb = 30;% Degrees
+Required_Energy_Absorption = 7350;                  % Energy in J
+theta_honeycomb = 30;                               % Degrees
 epsilon_d = log(1 / 1 + 2 * sind(theta_honeycomb));
-g = 9.81;% ms^-2
-Avg_Deccel = 20 * g / 1.2;% m/s
-Max_Deccel = 40 * g / 1.1;% m/s
+g = 9.81;                                           % ms^-2
+Avg_Deccel = 20 * g / 1.2;                          % Avg decleration in ms^-2
+Max_Deccel = 40 * g / 1.1;                          % Max decleration in ms^-2
+m = 300;                                            % Mass in kg
+
+%% Dimensions
+Height = 0.2;                       % Length in m facing the car (horizontal) Min 0.1
+Width = 0.3;                        % Width in m facing the car (vertical) Min 0.2
+Depth = 0.23;                        % Depth in m facing the car Min 0.2
+Volume = Height * Width * Depth;    % m^3
+Area = Height * Width;
+mass = honeycomb_density * Volume;
+
+%% Energy Absorption
+Specific_Energy_Absorption = epsilon_d * honeycomb_sigma_c_bare;    % Jm^-3
+Energy_Absorption = Specific_Energy_Absorption * Volume;            % J
+Energy_Absorbed = (ones * Required_Energy_Absorption) <= Energy_Absorption
+
+%% Deceleration
+decceleration = Area * honeycomb_sigma_c_bare / m;
+decceleration_boolean = Avg_Deccel >= decceleration
