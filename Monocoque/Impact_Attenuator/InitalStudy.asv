@@ -12,17 +12,19 @@ ShearStrength_solid_Al5052 = 138e6; % Shear Stress in Pa
 rho_solid_Al5052 = 2680;            % Density in kg/m^3
 nu_solid_Al5052 = 0.33;             % Poisson Ratio
 
-sigma_Y_solid_Al3003 = 41e6;       % Yield Strength in Pa
+sigma_Y_solid_Al3003 = 41e6;        % Yield Strength in Pa
 sigma_UTS_solid_Al3003 = 110e6;     % Ultimiate Tensilte Strength in Pa
 E_solid_Al3003 = 68.9e9;            % Young's Modulus in Pa
-G_solid_Al3003 = 25e9;            % Shear Modulus in Pa
-ShearStrength_solid_Al3003 = 75.8e6; % Shear Stress in Pa
+G_solid_Al3003 = 25e9;              % Shear Modulus in Pa
+ShearStrength_solid_Al3003 = 75.8e6;% Shear Stress in Pa
 rho_solid_Al3003 = 2730;            % Density in kg/m^3
 nu_solid_Al3003 = 0.33;             % Poisson Ratio
 
 % easyComposites data
 % Type 1,2,3 refers to 3.2mm,6.4mm,19.1mm cell sizes
+% Data included
 honeycomb_density = [72.1 83.3 28.8];
+honeycomb_cellsize = [3.2 6.4 19.1];
 honeycomb_solid_density = [rho_solid_Al5052 rho_solid_Al3003 rho_solid_Al3003];
 honeycomb_solid_yield = [sigma_Y_solid_Al5052 sigma_Y_solid_Al3003 sigma_Y_solid_Al3003];
 honeycomb_series = [5052 3003 3003];
@@ -36,7 +38,8 @@ honeycomb_shear_modulus_length = [psiToPa(70e3) psiToPa(65e3) psiToPa(23e3)];
 honeycomb_shear_strength_width = [psiToPa(220) psiToPa(210) psiToPa(60)];
 honeycomb_shear_modulus_width = [psiToPa(31e3) psiToPa(35e3) psiToPa(10e3)];
 
-% Finding constants
-honeycomb_relative_density = honeycomb_density ./ honeycomb_solid_density;
-honeycomb_constant_axial_stress = (honeycomb_sigma_c_bare ./ honeycomb_solid_yield) ./ honeycomb_relative_density;
-honeycomb_constant_tran_stress
+%% Technical requirements
+Safety_Factor_Energy_Absorption = 1.5;
+Required_Energy_Absorption = 7350;% Energy in J
+theta_honeycomb = 30;% Degrees
+epsilon_d = log(honeycomb_cellsize)
