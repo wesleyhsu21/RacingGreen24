@@ -7,3 +7,5 @@ b = 5;
 result = a * b;
 
 disp(result);
+
+c = 8;
