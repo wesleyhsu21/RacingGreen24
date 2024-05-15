@@ -40,7 +40,11 @@ honeycomb_shear_modulus_width = [psiToPa(31e3) psiToPa(35e3) psiToPa(10e3)];
 
 %% Technical requirements
 Safety_Factor_Energy_Absorption = 1.5;
+Safety_Factor_Avg_Deccel = 1.2;
+Safety_Factor_Max_Deccel = 1.1;
 Required_Energy_Absorption = 7350;% Energy in J
 theta_honeycomb = 30;% Degrees
 epsilon_d = log(1 / 1 + 2 * sind(theta_honeycomb));
 g = 9.81;% ms^-2
+Avg_Deccel = 20 * g / 1.2;% m/s
+Max_Deccel = 40 * g / 1.1;% m/s
