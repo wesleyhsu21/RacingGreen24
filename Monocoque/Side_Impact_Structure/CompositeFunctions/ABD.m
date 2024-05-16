@@ -1,4 +1,4 @@
-function[A, B, D, ABD, Q] = ABD(layup_s)
+function[A, B, D, ABD, Q, thickness] = ABD(layup_s)
 % Function to calculate the ABD matrix of an IM7/8552 laminate from the
 % symmetric layup. Adapted from Sujit
 % Inputs:
@@ -14,6 +14,7 @@ thetadb = [layup_s flip(layup_s)];
 Nplies = length(thetadb);
 
 t = 0.131e-3;
+thickness = t * Nplies;
 h      = Nplies * t ;
 
 zbar = zeros(1,Nplies);

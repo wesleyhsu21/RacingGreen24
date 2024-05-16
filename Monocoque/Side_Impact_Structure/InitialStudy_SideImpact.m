@@ -16,6 +16,11 @@ I_steel_total = I_steel_individual * no_steel_tubes;
 
 %% Composite
 % 0 deg aligned with the car's direction of travel
+% Assuming point force exactly in the centre of the plate
+%% Dimensions
+Length = 1000e-3;
+Width = 320e-3;
+
 %% Iteration 0 layup
 layup_iteration_0_s = [0 0 0 -45 45 0 0 0 90 0 0 0 -45 45];
-[A_0, B_0, D_0, ABD_0, Q_0] = ABD(layup_iteration_0_s)
+[A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
