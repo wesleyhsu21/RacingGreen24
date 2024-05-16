@@ -4,22 +4,31 @@ clc
 
 
 
-% FRONT WHEEL STEERING ONLY
+% ALPHA MAX CALCULATION BY USING MINIMUM RADIUS OF TURN
 
-syms x l alpha_max beta_f z_f radius_f
+syms x l alpha_max
  
 % Defining constants in equations
 x = 1;
 l = 1.5;
-alpha_max = 30;
- 
+delta_max = 6;
+min_radius = 3;
+alpha_max = alpha_max_calc(delta_max,min_radius,x,l);
+
+
+
+
+% FRONT WHEEL STEERING ONLY
+
+syms beta_f z_f radius_f
+
 % Setting up system of equations for front wheel steering only
 eqn1_f = z_f == l/(tand(beta_f)) - x;
 eqn2_f = z_f == l/(tand(alpha_max));
- 
+
 % Solving values from equation
 S_f = solve(eqn1_f, eqn2_f);
- 
+
 % Obtain the unknown variables
 z_f = S_f.z_f;
 beta_f = S_f.beta_f;
@@ -32,14 +41,14 @@ radius_f = double(radius_f);
 y_f = 0;
 
 
- 
+
 
 % INCLUDING REAR WHEELS FOR STEERING
 
 syms X Y gamma beta radius
 
 % Defining constants in equations
-delta = 6;
+delta = delta_max;
 
 % Setting up system of equations
 eqn1 = Y == tand(alpha_max) * X + l;
@@ -65,18 +74,8 @@ radius = double(radius);
 
 
 
+% PLOTTING
 
-
-
-
-
-
-
-
-
-
-
-% Plotting
 figure
 xlims = [-3,2];
 ylims = [-0.5,2];
@@ -112,23 +111,19 @@ plot([-z,x],[y,0],'b')
 plot([-z,x/2],[y,l/2],'b')
 
 % Centre line steering representation
-<<<<<<< HEAD
-plot([-3,2],[y,y])
-
-%test
-%test 2
-=======
-plot([-3,2],[y,y],'g--')
->>>>>>> a413ced13872a8094897217e141e030e8399c4fb
+plot(xlims,[y,y],'g--')
 
 
 
 
 % ANGLE CALCULATION THROUGH CENTRE PLACEMENT
 
-theta = - 100; % Steering wheel angle (values between -180 (full left) and 180)
+theta = - 150; % Steering wheel angle (values between -180 (full left) and 180)
 centre_placement(theta,xlims,alpha_max,l,y,x)
-
-
 hold off
+
+
+
+
+
 

@@ -11,15 +11,24 @@ syms x l alpha_max beta_f z_f radius_f
 % Defining constants in equations
 x = 1;
 l = 1.5;
-alpha_max = 30;
- 
+delta_max = 0;
+min_radius = 3;
+
+
+
+
+% ALPHA MAX CALCULATION BY USING MINIMUM RADIUS OF TURN
+
+alpha_max = alpha_max_calc(delta_max,min_radius,x,l);
+
+
 % Setting up system of equations for front wheel steering only
 eqn1_f = z_f == l/(tand(beta_f)) - x;
 eqn2_f = z_f == l/(tand(alpha_max));
- 
+
 % Solving values from equation
 S_f = solve(eqn1_f, eqn2_f);
- 
+
 % Obtain the unknown variables
 z_f = S_f.z_f;
 beta_f = S_f.beta_f;
@@ -32,14 +41,14 @@ radius_f = double(radius_f);
 y_f = 0;
 
 
- 
+
 
 % INCLUDING REAR WHEELS FOR STEERING
 
 syms X Y gamma beta radius
 
 % Defining constants in equations
-delta = 6;
+delta = delta_max;
 
 % Setting up system of equations
 eqn1 = Y == tand(alpha_max) * X + l;
@@ -65,21 +74,13 @@ radius = double(radius);
 
 
 
+% PLOTTING
 
-
-
-
-
-
-
-
-
-
-
-% Plotting
 figure
-xlim([-3,2])
-ylim([-0.5,2])
+xlims = [-3,2];
+ylims = [-0.5,2];
+xlim(xlims)
+ylim(ylims)
 hold on
 grid on
 
@@ -110,49 +111,19 @@ plot([-z,x],[y,0],'b')
 plot([-z,x/2],[y,l/2],'b')
 
 % Centre line steering representation
-plot([-3,2],[y,y],'g--')
-
-
-
-
-
-
-
-
-
+plot(xlims,[y,y],'g--')
 
 
 
 
 % ANGLE CALCULATION THROUGH CENTRE PLACEMENT
 
-theta = 1; % Steering wheel angle (values between -180 (full left) and 180)
-if theta < 0
-    alpha = - theta / 180 * alpha_max;
-    z = (l - y) / tand(alpha);
-    beta = atand((l - y) / (z + x));
-    delta = atand(y / z);
-    gamma = atand(y / (z + x));
-else
-    beta = - theta / 180 * alpha_max;
-    z = (l - y) / tand(beta);
-    alpha = atand((l - y) / (z + x));
-    delta = atand(y / z);
-    gamma = atand(y / (z + x));
-end
-
-
-% Centre of rotation AWS
-plot(-z,y,'gx',LineWidth=3)
-% Steering angles representation AWS
-plot([-z,x],[y,l],'g')
-plot([-z,0],[y,l],'g')
-plot([-z,0],[y,0],'g')
-plot([-z,x],[y,0],'g')
-% Turning radius representation AWS
-plot([-z,x/2],[y,l/2],'g')
-
-
-
+theta = - 170; % Steering wheel angle (values between -180 (full left) and 180)
+centre_placement(theta,xlims,alpha_max,l,y,x)
 hold off
+
+
+
+
+
 
