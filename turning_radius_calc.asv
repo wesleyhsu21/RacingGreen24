@@ -78,10 +78,8 @@ radius = double(radius);
 
 % Plotting
 figure
-xlims = [-3,2];
-ylims = [-0.5,2];
-xlim(xlims)
-ylim(ylims)
+xlim([-3,2])
+ylim([-0.5,2])
 hold on
 grid on
 
@@ -112,22 +110,48 @@ plot([-z,x],[y,0],'b')
 plot([-z,x/2],[y,l/2],'b')
 
 % Centre line steering representation
-<<<<<<< HEAD
-plot([-3,2],[y,y])
-
-%test
-%test 2
-=======
 plot([-3,2],[y,y],'g--')
->>>>>>> a413ced13872a8094897217e141e030e8399c4fb
+
+
+
+
+
+
+
+
+
 
 
 
 
 % ANGLE CALCULATION THROUGH CENTRE PLACEMENT
 
-theta = - 100; % Steering wheel angle (values between -180 (full left) and 180)
-centre_placement(theta,xlims,alpha_max,l,y,x)
+theta = 1; % Steering wheel angle (values between -180 (full left) and 180)
+if theta < 0
+    alpha = - theta / 180 * alpha_max;
+    z = (l - y) / tand(alpha);
+    beta = atand((l - y) / (z + x));
+    delta = atand(y / z);
+    gamma = atand(y / (z + x));
+else
+    beta = - theta / 180 * alpha_max;
+    z = (l - y) / tand(beta);
+    alpha = atand((l - y) / (z + x));
+    delta = atand(y / z);
+    gamma = atand(y / (z + x));
+end
+
+
+% Centre of rotation AWS
+plot(-z,y,'gx',LineWidth=3)
+% Steering angles representation AWS
+plot([-z,x],[y,l],'g')
+plot([-z,0],[y,l],'g')
+plot([-z,0],[y,0],'g')
+plot([-z,x],[y,0],'g')
+% Turning radius representation AWS
+plot([-z,x/2],[y,l/2],'g')
+
 
 
 hold off
