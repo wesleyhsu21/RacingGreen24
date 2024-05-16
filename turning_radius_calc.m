@@ -102,9 +102,13 @@ plot([-z,x],[y,0],'b')
 plot([-z,x/2],[y,l/2],'b')
 
 % Centre line steering representation
+<<<<<<< HEAD
 plot([-3,2],[y,y])
 
 %test
 %test 2
+=======
+plot([-3,2],[y,y],'g--')
+>>>>>>> a413ced13872a8094897217e141e030e8399c4fb
 
 hold off
