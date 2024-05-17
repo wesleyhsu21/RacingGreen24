@@ -41,4 +41,24 @@ z_max_0 = thickness_0/2;% Max z-coordinate value
 
 %% 3-point bending
 F = 1000;% Force in N
-M_
+% Force loading matrix
+N = [0;
+    F;
+    0];
+M_max = F * Length / 2;% Magnitude of Max moment in Nm
+
+% Assuming specially orthotrpic, B = 0
+
+% Moment/unit length vector
+M = [M_max / Width;
+    0;
+    0];
+
+% Curvature vector
+K = D_0 \ M;
+
+%% Applying ABD
+epsilon0_0 = A_0 \ N;
+
+% Assuming worst case strain
+epsilon_0 = epsilon0_0 + 

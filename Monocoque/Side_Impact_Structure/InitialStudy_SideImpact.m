@@ -59,4 +59,16 @@ K = D_0 \ M;
 
 %% Applying ABD
 epsilon0_0 = A_0 \ N;
-epsilon_0 = 
+
+% Assuming worst case strain
+epsilon_0 = epsilon0_0 + z_max_0 * K;
+
+sigma_0 = N / thickness_0;
+
+E = abs(sigma_0 ./ epsilon_0);
+
+%% Moment of area estimation
+I = Width * thickness_0^3 / 12;
+
+%% Flexural Rigidity
+EI = E * I;
