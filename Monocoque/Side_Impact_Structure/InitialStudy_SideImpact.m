@@ -20,8 +20,8 @@ I_steel_total = I_steel_individual * no_steel_tubes;
 % Using ESDU83035 for estimation of stiffness
 
 %% Dimensions
-% Length = 1000e-3;% m
-% Width = 320e-3;% m
+Length = 1000e-3;% m
+Width = 320e-3;% m
 % V_f = 0.577;% Fibre volume fraction
 % V_m = 1 - V_f;% Matrix volume fraction
 % rho_f = 1800;% Fibre density in kgm^-3
@@ -37,3 +37,26 @@ I_steel_total = I_steel_individual * no_steel_tubes;
 %% Iteration 0 layup
 layup_iteration_0_s = [0 0 0 -45 45 0 0 0 90 0 0 0 -45 45];
 [A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
+z_max_0 = thickness_0/2;% Max z-coordinate value
+
+%% 3-point bending
+F = 1000;% Force in N
+% Force loading matrix
+N = [0;
+    F;
+    0];
+M_max = F * Length / 2;% Magnitude of Max moment in Nm
+
+% Assuming specially orthotrpic, B = 0
+
+% Moment/unit length vector
+M = [M_max / Width;
+    0;
+    0];
+
+% Curvature vector
+K = D_0 \ M;
+
+%% Applying ABD
+epsilon0_0 = A_0 \ N;
+epsilon_0 = 
