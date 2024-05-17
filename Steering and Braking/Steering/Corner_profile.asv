@@ -1,8 +1,7 @@
 clear
 clc
 
-%% Baseline corners
-
+%%
 % Defining track constraints
 d_min = 9; % minimum corner diameter is 9m from the rules
 r_min = d_min/2;
@@ -26,8 +25,7 @@ in_cr_rad = ((d_min-(2*w_min))/2) + (car_width/2);
 [x_in_car, y_in_car] = circle(0,0,in_cr_rad,0,pi);
 
 
-%% Classical racing line
-
+%%
 % Determining classical racing line
 pt_rl_cl1 = [-(r_min - car_width/2),0];
 pt_rl_cl2 = [0,(r_min+car_width/2-w_min)];
@@ -42,8 +40,8 @@ pt_rl_cl3 = [(r_min - car_width/2),0];
 % xx_rl_cl = -(r_min - car_width/2):0.1:(r_min - car_width/2);
 % yy_rl_cl = spline(x_rl_cl,y_rl_cl,xx_rl_cl);
 
-%% Late apex racing line
-
+%%
+% Determining late apex raxing line
 % Late apex point 1 is at end of straight/ beginign of outer circle radius
 x_rl_la1 = x_out_car(length(x_out_car));
 y_rl_la1 = y_out_car(length(x_out_car));
@@ -54,12 +52,12 @@ x_rl_la2 = x_out_car(round(la2_ratio*length(x_out_car)));
 y_rl_la2 = y_out_car(round(la2_ratio*length(x_out_car)));
 
 % Late apex point 3 is a percentage of classical racing line
-la3_ratio = 0.40; % Define this as a percentage of clasical racing line
+la3_ratio = 0.36; % Define this as a percentage of clasical racing line
 x_rl_la3 = x_rl_cl(round(la3_ratio*length(x_rl_cl)));
 y_rl_la3 = y_rl_cl(round(la3_ratio*length(y_rl_cl)));
 
 % Late apex point 4 is a percentage of final straight length
-la4_ratio = 0.5; % Define this as a percentage of final straight length on outside
+la4_ratio = 1; % Define this as a percentage of final straight length on outside
 x_rl_la4 = r_min - car_width/2;
 y_rl_la4 = la4_ratio*-2;
 
@@ -72,7 +70,7 @@ x_rl_la_range = linspace(min(x_rl_la), max(x_rl_la),50); % creating range for po
 p_rl_la = polyfit(x_rl_la,y_rl_la,3);
 v_rl_la = polyval(p_rl_la, x_rl_la_range);
 
-%%
+
 % Plotting all points 
 figure
 hold on 
@@ -103,16 +101,10 @@ plot([out_cr_rad,out_cr_rad],[-2,0],color="blue",LineWidth=1.5)
 % Plotting classical racing line
 plot(x_rl_cl,y_rl_cl,color="red",LineWidth=1.5)
 
-% Plotting late apex racing line
+% Plotting la racing line
 plot(x_rl_la_range,v_rl_la,color="green",LineWidth=1.5)
 
 % Plotting la racing line points
-plot(x_rl_la1,y_rl_la1,"o",color="black")
-plot(x_rl_la2,y_rl_la2,"o",color="black")
-plot(x_rl_la3,y_rl_la3,"o",color="black")
-plot(x_rl_la4,y_rl_la4,"o",color="black")
-
-%% Iterating to find minimum radius of curvature
 
 
 
