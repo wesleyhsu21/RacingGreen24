@@ -16,34 +16,35 @@ clc
 % through the other facesheet
 
 %% Facesheet layup
-layup_iteration_0_s = [0 0 0 -45 45 0 0 0 90 0 0 0 -45 45];
+layup_iteration_0_s = [0 0 0 0 90 0 0 -45 45 -45 45 90];
 [A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
 
-L = 1000e-3;% Length of the structure in m
-b = 240e-3;% Depth of the beam, i.e. about the axis of bending in m
-
+L = 1500e-3;% Length of the structure in m
+b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
+c = 30e-3;% Thickness of the foam core
 %% Orthoropic approximation
 F = 1000;% Force in N
 
-E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b;
-E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b;
+b_adapted = 0.05; %A
+
+E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
+E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
 %% Dimensions and properties
-E_c = psiToPa(22e3);% Modulus of the foam core in Pa
-c = 30e-3;% Thickness of the foam core
+E_c = psiToPa(65e3);% Modulus of the foam core in Pa
 d = c + thickness_0;
-G_c = psiToPa(10e3);% Shear modulus of the foam core in Pa
+G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
 sigma_critical_fc = 1.780e9;% Compressive composite facesheet failure stress in Pa
 tau_critical_glue = 60e6;% Glue delamination stress
-tau_critical_core = psiToPa(95);% Critical core shear stress
-sigma_critical_core = psiToPa(115);% Critical stress same due to isotropic
-rho_fc = 1570;
-rho_c = 28.8;
+tau_critical_core = psiToPa(360);% Critical core shear stress
+sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
+rho_fc = 1570;% Facesheet density in kgm^-3
+rho_c = 83.3;% Core density in kgm^-3
 volume_fc = thickness_0 * b * L;% Volume in m^3
 mass_fc = volume_fc * rho_fc;% Mass in kg
 volume_c = c * b * L;% Volume in m^3
 mass_c = volume_c * rho_c;% Mass in kg
-mass_total = mass_fc + mass_c
-
+mass_total = mass_fc + mass_c %Total mass per side in kg
+thickness_total = c + 2 * thickness_0
 %% Dimensionless quantities
 tbar = thickness_0 / c;
 cbar = c / L;
@@ -80,3 +81,7 @@ end
 
 %% Indentation failure
 F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
+
+%% Test
+required_EI = 3.4067e+03
+EI_sw
