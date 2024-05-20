@@ -23,7 +23,7 @@ L = 1500e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
 c = 30e-3;% Thickness of the foam core
 %% Orthoropic approximation
-F = 1000;% Force in N
+F = 7500;% Force in N
 
 b_adapted = 0.05; %A
 
@@ -69,19 +69,19 @@ if F_critical_facesheet < F
 end
 
 %% Core delamination
-S = F/2;% Shear force magnitude in 3-point bending
-tau_I = S / (b * d);% Core shear stress
-if tau_critical_glue < tau_I
-    disp("Sandwich structure fails in delamination failure")
-end
+F_critical_glue = 2 * b * d * tau_critical_glue;
 
-if tau_critical_core < tau_I
-    disp("Sandwich structure fails in core yield failure")
-end
+F_critical_CS = 2 * b * d * tau_critical_core;
 
 %% Indentation failure
 F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
 
+%% Min Force for failure
+[minload,i_minload] = min([F_critical_facesheet F_critical_glue F_critical_CS F_critical_indentation]);
+failuremode = ["Facesheet Failure" "Delamination" "Core Shear Failure" "Indenation Failure"];
+disp(['The laminate fails in ' failuremode(i_minload) ' at ' minload ' N'])
+
 %% Test
 required_EI = 3.4067e+03
 EI_sw
+ 
