@@ -34,7 +34,7 @@ honeycomb_sigma_c_bare = [psiToPa(539) psiToPa(625) psiToPa(115)];
 honeycomb_sigma_c_stabilised = [psiToPa(559) psiToPa(655) psiToPa(125)];
 honeycomb_sigma_crush = [psiToPa(255) psiToPa(235) psiToPa(40)];
 honeycomb_shear_strength_length = [psiToPa(340) psiToPa(360) psiToPa(95)];
-honeycomb_shear_modulus_length = [psiToPa(70e3) psiToPa(65e3) psiToPa(23e3)];
+honeycomb_shear_modulus_length = [psiToPa(70e3) psiToPa(65e3) psiToPa(22e3)];
 honeycomb_shear_strength_width = [psiToPa(220) psiToPa(210) psiToPa(60)];
 honeycomb_shear_modulus_width = [psiToPa(31e3) psiToPa(35e3) psiToPa(10e3)];
 
