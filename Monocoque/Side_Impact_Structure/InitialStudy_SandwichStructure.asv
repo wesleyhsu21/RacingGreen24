@@ -60,7 +60,7 @@ EI_sw = (E_f_x * b * thickness_0 * d^2 / 2) + (E_f_x * b * thickness_0^3 / 6) + 
 AG_sw = b * c * G_c;
 
 %% 3 point bend deflection estimation
-delta_3point = (F * L^3) / (48 * EI_sw) + (F * L) / (4 * AG_sw);% Approximate deflection in m
+delta_3point_perimeter = (F * L^3) / (48 * EI_sw) + (F * L) / (4 * AG_sw);% Approximate deflection in m
 
 %% Facesheet failure
 F_critical_facesheet = (4 * d * b * thickness_0 * sigma_critical_fc) / L;% Critial load in 3-point bending causing facesheet failure
@@ -69,26 +69,30 @@ if F_critical_facesheet < F
 end
 
 %% Core delamination
-S = F/2;% Shear force magnitude in 3-point bending
-tau_I = S / (b * d);% Core shear stress
+F_critical_glue = 2 * b * d * tau_critical_glue;
 
-F_critical_glue = 
-
-if tau_critical_glue < tau_I
-    disp("Sandwich structure fails in delamination failure")
-end
-
-if tau_critical_core < tau_I
-    disp("Sandwich structure fails in core yield failure")
-end
+F_critical_CS = 2 * b * d * tau_critical_core;
 
 %% Indentation failure
 F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
 
 %% Min Force for failure
-[minload,i_minload] = min([F_critical_facesheet])
+[minload,i_minload] = min([F_critical_facesheet F_critical_glue F_critical_CS F_critical_indentation]);
+failuremode = ["Facesheet Failure" "Delamination" "Core Shear Failure" "Indenation Failure"];
+disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
 
+%% Energy absorption
+delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
+% Know that it deflects before failure
+
+delta_desired = 0.1;
+F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
+
+Energy_absorbed = 0.1 * F_absorption;
+
+%% Steel absorption
+E_steel = 2e11;
+sigma_y_steel = 3.05e8
 %% Test
 required_EI = 3.4067e+03
 EI_sw
- 

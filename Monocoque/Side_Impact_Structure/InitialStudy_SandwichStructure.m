@@ -60,7 +60,7 @@ EI_sw = (E_f_x * b * thickness_0 * d^2 / 2) + (E_f_x * b * thickness_0^3 / 6) + 
 AG_sw = b * c * G_c;
 
 %% 3 point bend deflection estimation
-delta_3point = (F * L^3) / (48 * EI_sw) + (F * L) / (4 * AG_sw);% Approximate deflection in m
+delta_3point_perimeter = (F * L^3) / (48 * EI_sw) + (F * L) / (4 * AG_sw);% Approximate deflection in m
 
 %% Facesheet failure
 F_critical_facesheet = (4 * d * b * thickness_0 * sigma_critical_fc) / L;% Critial load in 3-point bending causing facesheet failure
@@ -79,9 +79,29 @@ F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_f
 %% Min Force for failure
 [minload,i_minload] = min([F_critical_facesheet F_critical_glue F_critical_CS F_critical_indentation]);
 failuremode = ["Facesheet Failure" "Delamination" "Core Shear Failure" "Indenation Failure"];
-disp(['The laminate fails in ' failuremode(i_minload) ' at ' minload ' N'])
+disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
+
+%% Energy absorption
+delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
+% Know that it deflects before failure
+
+delta_desired = 0.1;
+F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
+
+Energy_absorbed = 0.1 * F_absorption;
+
+%% Steel absorption
+E_steel = 2e11;
+sigma_y_steel = 3.05e8;
+UTS_steel = 3.65e8;
+no_tubes = 2;
+OD_tube = 25.4e-3;
+wall_thickness = 1.6e-3;
+ID_tube = OD_tube - 2 * wall_thickness;
+
+area_single = pi / 4 * (OD_tube^2 - ID_tube^2);
+area_tubes = area_single * no_tubes;
 
 %% Test
 required_EI = 3.4067e+03
 EI_sw
- 
