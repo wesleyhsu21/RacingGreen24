@@ -85,10 +85,10 @@ disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
 delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
 % Know that it deflects before failure
 
-delta_desired = 0.1;
+delta_desired = 0.045;
 F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
 
-Energy_absorbed = 0.1 * F_absorption;
+Energy_absorbed = delta_desired * F_absorption;
 
 %% Steel absorption
 E_steel = 2e11;
@@ -102,6 +102,12 @@ ID_tube = OD_tube - 2 * wall_thickness;
 area_single = pi / 4 * (OD_tube^2 - ID_tube^2);
 area_tubes = area_single * no_tubes;
 
+strain_y_steel = sigma_y_steel / E_steel;
+Energy_absorbed_steel = (strain_y_steel * sigma_y_steel / 2) * area_tubes * L;
 %% Test
 required_EI = 3.4067e+03
 EI_sw
+
+% Deflects at delta_desired, absorbs more energy assuming linear elasticity
+Energy_absorbed_steel
+Energy_absorbed
