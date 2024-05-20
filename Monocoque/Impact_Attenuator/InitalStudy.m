@@ -66,3 +66,21 @@ Energy_Absorbed = (ones * Required_Energy_Absorption) <= Energy_Absorption
 %% Deceleration
 decceleration = Area * honeycomb_sigma_c_bare / m;
 decceleration_boolean = Avg_Deccel >= decceleration
+
+%% Plotting
+dense_strain = 0.69312;
+dense_stress = (dense_strain - 0.6931) * E_solid_Al3003 + honeycomb_sigma_c_bare(3);
+x = [0 0.01 0.6931 dense_strain];
+y = [0 honeycomb_sigma_c_bare(3) honeycomb_sigma_c_bare(3) dense_stress];
+
+IAPlot = figure;
+plot(x,y)
+hold on
+T1xregion1 = [0 dense_strain dense_strain 0];
+T1yregion1 = [0 0 honeycomb_sigma_c_bare(3) honeycomb_sigma_c_bare(3)];
+fill(T1xregion1, T1yregion1, 'red', 'FaceAlpha', 0.3)
+xlabel('$\varepsilon$')
+ylabel('$\sigma$ / Pa')
+hold off
+betterPlot(IAPlot)
+legend('','Specific Energy Absorption')
