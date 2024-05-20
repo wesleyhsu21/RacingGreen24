@@ -59,7 +59,16 @@ G_c = ;% Shear modulus of the foam core in Pa
 L = ;% Length of the structure in m
 sigma_critical_fc = ;% Compressive composite facesheet failure stress in Pa
 tau_critical_glue = ;% Glue delamination stress
-tau_critical_core = ;% Critical core stress
+tau_critical_core = ;% Critical core shear stress
+sigma_critical_core = tau_critical_core;% Critical stress same due to isotropic
+
+%% Dimensionless quantities
+tbar = thickness_0 / c;
+cbar = c / L;
+sigmabar = sigma_critical_fc / sigma_critical_core;
+taubar = tau_critical_core / sigma_critical_fc;
+Ebar = E_f / simga_critical_fc;
+Fbar = F / (b * L * sigma_critical_fc);
 
 %% Equivalent bending stiffness
 EI_sw = (E_f * b * t * d^2 / 2) + (E_f * b * t^3 / 6) + (E_c * b * c^3 / 12);

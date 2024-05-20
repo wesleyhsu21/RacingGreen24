@@ -59,7 +59,13 @@ G_c = ;% Shear modulus of the foam core in Pa
 L = ;% Length of the structure in m
 sigma_critical_fc = ;% Compressive composite facesheet failure stress in Pa
 tau_critical_glue = ;% Glue delamination stress
-tau_critical_core = ;% Critical core stress
+tau_critical_core = ;% Critical core shear stress
+sigma_critical_core = tau_critical_core;% Critical stress same due to isotropic
+
+%% Dimensionless quantities
+tbar = thickness_0 / c;
+cbar = c / L;
+sigmabar = sigma_critical_
 
 %% Equivalent bending stiffness
 EI_sw = (E_f * b * t * d^2 / 2) + (E_f * b * t^3 / 6) + (E_c * b * c^3 / 12);
@@ -80,4 +86,12 @@ end
 S = F/2;% Shear force magnitude in 3-point bending
 tau_I = S / (b * d);% Core shear stress
 if tau_critical_glue < tau_I
-    disp("Sandwich structure fails in ")
+    disp("Sandwich structure fails in delamination failure")
+end
+
+if tau_critical_core < tau_I
+    disp("Sandwich structure fails in core yield failure")
+end
+
+%% Indentation failure
+F_critical_indentation = b * t * ((pi^2 * d * E_f * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
