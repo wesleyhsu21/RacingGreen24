@@ -86,7 +86,7 @@ disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
 delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
 % Know that it deflects before failure
 
-delta_desired = 0.045;
+delta_desired = 0.042;
 F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
 
 Energy_absorbed = delta_desired * F_absorption;
