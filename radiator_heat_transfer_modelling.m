@@ -1,11 +1,12 @@
-% this script models heat transfer for the radiator
-% Seider-Tate empiracal model is used here
+%% IRG24 Cooling: Radiator Script
+% This script models heat transfer for the radiator
+% Seider-Tate empirical model is employed here 
 % alongside with Geankoplis data correlation for Seider-Tate
 clc
 clear
 
 %% Air parameters
-% assume air at 25 C
+% Assume air at 25*C:
 % https://www.engineersedge.com/physics/viscosity_of_air_dynamic_and_kinematic_14483.htm
 
 % Fan parameters: 
@@ -18,7 +19,7 @@ W_tube = 54.2e-3; % m
 radiator_w = 240e-3; % x-direction on drawing
 radiator_t = 54.2e-3; % Thickness/depth
 radiator_h = 105e-3; % height of radiator
-radiator_pipe_d = 6.35e-3; % m
+radiator_pipe_d = 6.35e-3; % m 
 radiator_pipe_l = (radiator_w * 2) + (radiator_h/2); % Length of piping through the radiator (from inlet -> outlet)
 A_ext = radiator_w * radiator_h; % Surface area of external facing plane
 A_int = (pi * radiator_pipe_d) * radiator_pipe_l; % Internal surface area of total pipe inside radiator. 
@@ -26,7 +27,7 @@ A_int = (pi * radiator_pipe_d) * radiator_pipe_l; % Internal surface area of tot
 % Air parameters: 
 T_air = 25 + 273; % T air at infinity 
 mu_air = 1.849e-5; % At 25*C (298*K)
-kinematic_viscosity = 1.562*10^-5;
+kinematic_viscosity_air = 1.562*10^-5;
 Pr_air = 0.7296; % Prandtl number
 rho_air = 1.184; 
 Cp_air = 1007;
@@ -72,3 +73,5 @@ NTU = U_total/C_r; % Number of transfer units
 epsilon = 1 - exp(((1/C_r)*NTU^0.22)*(exp(-C_r*NTU^0.78)-1));
 q_radiator = epsilon*Cp_air*(delta_T_coolant); 
 delta_q = q_radiator - motor_heat
+
+save('radiatorParameters.mat')
