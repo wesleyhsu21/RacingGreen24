@@ -12,7 +12,7 @@ syms x l alpha_max
 x = 1;
 l = 1.5;
 delta_max = 6;
-heading_angle = 12.3813;11.23;
+heading_angle = 12.3813;%11.23;
 min_radius = min_radius_calc(heading_angle,delta_max,x,l);
 alpha_max = alpha_max_calc(delta_max,min_radius,x,l);
 
@@ -120,7 +120,7 @@ plot(xlims,[y,y],'g--')
 % ANGLE CALCULATION THROUGH CENTRE PLACEMENT
 
 theta = - 150; % Steering wheel angle (values between -180 (full left) and 180)
-centre_placement(theta,xlims,alpha_max,l,y,x)
+[curr_alpha,curr_beta,curr_delta,curr_gamma,curr_ba_anti] = centre_placement(theta,xlims,alpha_max,l,y,x);
 hold off
 
 

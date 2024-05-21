@@ -23,11 +23,11 @@ function [alpha,beta,delta,gamma,ba_anti] = centre_placement(theta,xlims,alpha_m
             beta = - theta / 180 * alpha_max;
             z = (l - y) / tand(- beta);
             alpha = - atand((l - y) / (x + z));
-            ba_anti = - atand((l - y) / (z - x));
+            ba_anti = atand((l - y) / (z - x));
             gamma = - atand(y / z);
             delta = - atand(y / (z + x));
             z = - z - x;
-            xint = - l / tand(ba_anti);
+            xint = l / tand(ba_anti);
             plot([xint,0],[0,l],'m')
         end
         % Centre of rotation AWS
