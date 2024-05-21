@@ -42,21 +42,21 @@ honeycomb_shear_modulus_width = [psiToPa(31e3) psiToPa(35e3) psiToPa(10e3)];
 Safety_Factor_Energy_Absorption = 1.5;
 Safety_Factor_Avg_Deccel = 1.2;
 Safety_Factor_Max_Deccel = 1.1;
-Required_Energy_Absorption = 7350;                  % Energy in J
-theta_honeycomb = 30;                               % Degrees
+Required_Energy_Absorption = 7350 * Safety_Factor_Energy_Absorption;    % Energy in J
+theta_honeycomb = 30;                                                   % Degrees
 epsilon_d = log(1 / 1 + 2 * sind(theta_honeycomb));
-g = 9.81;                                           % ms^-2
-Avg_Deccel = 20 * g / 1.2;                          % Avg decleration in ms^-2
-Max_Deccel = 40 * g / 1.1;                          % Max decleration in ms^-2
-m = 300;                                            % Mass in kg
+g = 9.81;                                                               % ms^-2
+Avg_Deccel = 20 * g / Safety_Factor_Avg_Deccel;                         % Avg decleration in ms^-2
+Max_Deccel = 40 * g / Safety_Factor_Max_Deccel;                         % Max decleration in ms^-2
+m = 300;                                                                % Mass in kg
 
 %% Dimensions
 Height = 0.2;                       % Length in m facing the car (horizontal) Min 0.1
 Width = 0.3;                        % Width in m facing the car (vertical) Min 0.2
-Depth = 0.23;                        % Depth in m facing the car Min 0.2
+Depth = 0.34;                       % Depth in m facing the car Min 0.2
 Volume = Height * Width * Depth;    % m^3
 Area = Height * Width;
-mass = honeycomb_density * Volume;
+mass = honeycomb_density * Volume
 
 %% Energy Absorption
 Specific_Energy_Absorption = epsilon_d * honeycomb_sigma_c_bare;    % Jm^-3
@@ -84,3 +84,161 @@ ylabel('$\sigma$ / Pa')
 hold off
 betterPlot(IAPlot)
 legend('','Specific Energy Absorption')
+saveas(IAPlot, 'IAPlot.png')
+
+%% Minimum geometry
+% Define the dimensions of the box
+height = 100; % Height in mm
+width = 200;  % Width in mm
+length = 200; % Length in mm
+
+% Define the vertices of the box
+vertices = [0 0 0; 
+            length 0 0; 
+            length width 0; 
+            0 width 0; 
+            0 0 height; 
+            length 0 height; 
+            length width height; 
+            0 width height];
+
+% Define the faces of the box using the vertices
+faces = [1 2 3 4; 
+         5 6 7 8; 
+         1 2 6 5; 
+         2 3 7 6; 
+         3 4 8 7; 
+         4 1 5 8];
+
+% Create the figure
+IAgeometry = figure;
+hold on;
+
+% Plot the box
+patch('Vertices', vertices, 'Faces', faces, 'FaceColor', 'cyan', 'EdgeColor', 'black');
+
+% Set the axes properties
+xlabel('Length / mm')
+ylabel('Width / mm')
+zlabel('Height / mm')
+axis equal
+grid on
+view(3)
+
+% Add title
+title('Mininum Impact Attenuator Geometry')
+betterPlot(IAgeometry)
+legend("off")
+saveas(IAgeometry,"IAgeometry.png")
+hold off;
+
+%% Actual geometry
+% Define the dimensions of the box
+height = 100; % Height in mm
+width = 300;  % Width in mm
+length = 340; % Length in mm
+
+% Define the vertices of the box
+vertices = [0 0 0; 
+            length 0 0; 
+            length width 0; 
+            0 width 0; 
+            0 0 height; 
+            length 0 height; 
+            length width height; 
+            0 width height];
+
+% Define the faces of the box using the vertices
+faces = [1 2 3 4; 
+         5 6 7 8; 
+         1 2 6 5; 
+         2 3 7 6; 
+         3 4 8 7; 
+         4 1 5 8];
+
+% Create the figure
+IAgeometry_actual = figure;
+hold on;
+
+% Plot the box
+patch('Vertices', vertices, 'Faces', faces, 'FaceColor', 'cyan', 'EdgeColor', 'black');
+
+% Set the axes properties
+xlabel('Length / mm')
+ylabel('Width / mm')
+zlabel('Height / mm')
+axis equal
+grid on
+view(3)
+
+% Add title
+title('Actual Impact Attenuator Geometry')
+betterPlot(IAgeometry_actual)
+legend("off")
+saveas(IAgeometry_actual,"IAgeometry_actual.png")
+hold off;
+
+%% Combined
+% Define the dimensions of the actual box
+actual_height = Height * 1000; % Height in mm
+actual_width = Width * 1000;  % Width in mm
+actual_length = Depth * 1000; % Length in mm
+
+% Define the dimensions of the minimum box
+min_height = 50; % Minimum height in mm
+min_width = 200; % Minimum width in mm
+min_length = 200; % Minimum length in mm
+
+% Define the vertices of the actual box
+actual_vertices = [0 0 0; 
+                   actual_length 0 0; 
+                   actual_length actual_width 0; 
+                   0 actual_width 0; 
+                   0 0 actual_height; 
+                   actual_length 0 actual_height; 
+                   actual_length actual_width actual_height; 
+                   0 actual_width actual_height];
+
+% Define the vertices of the minimum box
+min_vertices = [0.5 0.5 0.5; 
+                min_length 0.5 0.5; 
+                min_length min_width 0.5; 
+                0.5 min_width 0.5; 
+                0.5 0.5 min_height; 
+                min_length 0.5 min_height; 
+                min_length min_width min_height; 
+                0.5 min_width min_height];
+
+% Define the faces of the box using the vertices
+faces = [1 2 3 4; 
+         5 6 7 8; 
+         1 2 6 5; 
+         2 3 7 6; 
+         3 4 8 7; 
+         4 1 5 8];
+
+% Create the figure
+IAgeometry_comparison = figure;
+hold on;
+
+% Plot the actual box
+patch('Vertices', actual_vertices, 'Faces', faces, 'FaceColor', 'cyan', 'EdgeColor', 'black', 'FaceAlpha', 0.5);
+
+% Plot the minimum box
+patch('Vertices', min_vertices, 'Faces', faces, 'FaceColor', 'red', 'EdgeColor', 'black', 'FaceAlpha', 0.5);
+
+% Set the axes properties
+xlabel('Length / mm')
+ylabel('Width / mm')
+zlabel('Height / mm')
+axis equal
+grid on
+view(3)
+
+% Add title
+%title('Comparison of Impact Attenuator Geometries')
+betterPlot(IAgeometry_comparison)
+legend('Actual Geometry', 'Minimum Geometry',Location='northwest')
+%legend("off")
+saveas(IAgeometry_comparison, "IAgeometry_comparison.png")
+hold off;

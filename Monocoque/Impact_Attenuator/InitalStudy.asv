@@ -68,9 +68,64 @@ decceleration = Area * honeycomb_sigma_c_bare / m;
 decceleration_boolean = Avg_Deccel >= decceleration
 
 %% Plotting
-dense_strain = 0.693108;
+dense_strain = 0.69312;
 dense_stress = (dense_strain - 0.6931) * E_solid_Al3003 + honeycomb_sigma_c_bare(3);
 x = [0 0.01 0.6931 dense_strain];
 y = [0 honeycomb_sigma_c_bare(3) honeycomb_sigma_c_bare(3) dense_stress];
 
-IAPlotplot(x,y)
+IAPlot = figure;
+plot(x,y)
+hold on
+T1xregion1 = [0 dense_strain dense_strain 0];
+T1yregion1 = [0 0 honeycomb_sigma_c_bare(3) honeycomb_sigma_c_bare(3)];
+fill(T1xregion1, T1yregion1, 'red', 'FaceAlpha', 0.3)
+xlabel('$\varepsilon$')
+ylabel('$\sigma$ / Pa')
+hold off
+betterPlot(IAPlot)
+legend('','Specific Energy Absorption')
+saveas(IAPlot, 'IAPlot.png')
+
+%% Minimum geometry
+% Define the dimensions of the box
+height = 100; % Height in mm
+width = 200;  % Width in mm
+length = 200; % Length in mm
+
+% Define the vertices of the box
+vertices = [0 0 0; 
+            length 0 0; 
+            length width 0; 
+            0 width 0; 
+            0 0 height; 
+            length 0 height; 
+            length width height; 
+            0 width height];
+
+% Define the faces of the box using the vertices
+faces = [1 2 3 4; 
+         5 6 7 8; 
+         1 2 6 5; 
+         2 3 7 6; 
+         3 4 8 7; 
+         4 1 5 8];
+
+% Create the figure
+figure;
+hold on;
+
+% Plot the box
+patch('Vertices', vertices, 'Faces', faces, 'FaceColor', 'cyan', 'EdgeColor', 'black');
+
+% Set the axes properties
+xlabel('Length / mm')
+ylabel('Width / mm')
+zlabel('Height / mm')
+axis equal
+grid on
+view(3)
+
+% Add title
+title('Mininum Impact Attenuator Geome')
+
+hold off;
