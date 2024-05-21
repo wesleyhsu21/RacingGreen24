@@ -1,0 +1,98 @@
+clear
+clc
+
+%% Assumptions
+% Beam theory applicable to sandwich structures for low t/c, c/L
+% Assume homogeneous isotropic facesheets with modulus E_f
+% Assume isotropic foam core of modulus E_c
+% Assume sigma_fc_failure is lower than sigma_ft_failure (compressive lower
+% than tensile)
+% Facesheet failure occurs in 3 point bending
+
+%% Definitions
+% t = Thickness of ONE laminate facesheet
+% c = Thickness of foam core
+% d = c + t i.e. distance from halfway through a facesheet to halfway
+% through the other facesheet
+
+%% Facesheet layup
+layup_iteration_0_s = [0 0 0 0 90 0 0 -45 45 -45 45 90];
+[A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
+
+L = 1500e-3;% Length of the structure in m
+b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
+c = 30e-3;% Thickness of the foam core
+%% Orthoropic approximation
+F = 7500;% Force in N
+
+b_adapted = 0.05; %A
+
+E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
+E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
+%% Dimensions and properties
+E_c = psiToPa(65e3);% Modulus of the foam core in Pa
+d = c + thickness_0;
+G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
+sigma_critical_fc = 1.780e9;% Compressive composite facesheet failure stress in Pa
+tau_critical_glue = 60e6;% Glue delamination stress
+tau_critical_core = psiToPa(360);% Critical core shear stress
+sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
+rho_fc = 1570;% Facesheet density in kgm^-3
+rho_c = 83.3;% Core density in kgm^-3
+volume_fc = thickness_0 * b * L;% Volume in m^3
+mass_fc = volume_fc * rho_fc;% Mass in kg
+volume_c = c * b * L;% Volume in m^3
+mass_c = volume_c * rho_c;% Mass in kg
+mass_total = mass_fc + mass_c %Total mass per side in kg
+thickness_total = c + 2 * thickness_0
+%% Dimensionless quantities
+tbar = thickness_0 / c;
+cbar = c / L;
+sigmabar = sigma_critical_fc / sigma_critical_core;
+taubar = tau_critical_core / sigma_critical_fc;
+Ebar = E_f_x / sigma_critical_fc;
+Fbar = F / (b * L * sigma_critical_fc);
+
+%% Equivalent bending stiffness
+EI_sw = (E_f_x * b * thickness_0 * d^2 / 2) + (E_f_x * b * thickness_0^3 / 6) + (E_c * b * c^3 / 12);
+
+%% Equivalent shear stiffness
+AG_sw = b * c * G_c;
+
+%% 3 point bend deflection estimation
+delta_3point_perimeter = (F * L^3) / (48 * EI_sw) + (F * L) / (4 * AG_sw);% Approximate deflection in m
+
+%% Facesheet failure
+F_critical_facesheet = (4 * d * b * thickness_0 * sigma_critical_fc) / L;% Critial load in 3-point bending causing facesheet failure
+if F_critical_facesheet < F
+    disp("Sandwich structure fails in facesheet failure")
+end
+
+%% Core delamination
+F_critical_glue = 2 * b * d * tau_critical_glue;
+
+F_critical_CS = 2 * b * d * tau_critical_core;
+
+%% Indentation failure
+F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
+
+%% Min Force for failure
+[minload,i_minload] = min([F_critical_facesheet F_critical_glue F_critical_CS F_critical_indentation]);
+failuremode = ["Facesheet Failure" "Delamination" "Core Shear Failure" "Indenation Failure"];
+disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
+
+%% Energy absorption
+delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
+% Know that it deflects before failure
+
+delta_desired = 0.1;
+F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
+
+Energy_absorbed = 0.1 * F_absorption;
+
+%% Steel absorption
+E_steel = 2e11;
+sigma_y_steel = 3.05e8
+%% Test
+required_EI = 3.4067e+03
+EI_sw
