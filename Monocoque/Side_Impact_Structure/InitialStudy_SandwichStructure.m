@@ -1,5 +1,6 @@
 clear
 clc
+close all
 
 %% Assumptions
 % Beam theory applicable to sandwich structures for low t/c, c/L
@@ -111,3 +112,74 @@ EI_sw
 % Deflects at delta_desired, absorbs more energy assuming linear elasticity
 Energy_absorbed_steel
 Energy_absorbed
+
+%% Visualisation
+% Define the dimensions of the sandwich structure
+LenPlot = L * 1000; % Length in mm
+W = b * 1000; % Width in mm
+t = thickness_0 * 1000;  % Thickness of facesheet in mm
+core = c * 1000;  % Thickness of core in mm
+
+% Create vertices for the facesheets and the core
+facesheet1_vertices = [0 0 0;
+                       LenPlot 0 0;
+                       LenPlot W 0;
+                       0 W 0;
+                       0 0 t;
+                       LenPlot 0 t;
+                       LenPlot W t;
+                       0 W t];
+
+core_vertices = [0 0 t;
+                 LenPlot 0 t;
+                 LenPlot W t;
+                 0 W t;
+                 0 0 (t + core);
+                 LenPlot 0 (t + core);
+                 LenPlot W (t + core);
+                 0 W (t + core)];
+
+facesheet2_vertices = [0 0 (t + core);
+                       LenPlot 0 (t + core);
+                       LenPlot W (t + core);
+                       0 W (t + core);
+                       0 0 (2*t + core);
+                       LenPlot 0 (2*t + core);
+                       LenPlot W (2*t + core);
+                       0 W (2*t + core)];
+
+% Define the faces of the boxes using the vertices
+faces = [1 2 3 4; 
+         5 6 7 8; 
+         1 2 6 5; 
+         2 3 7 6; 
+         3 4 8 7; 
+         4 1 5 8];
+
+% Create the figure
+composite_structure = figure;
+hold on;
+
+% Plot the first facesheet
+patch('Vertices', facesheet1_vertices, 'Faces', faces, 'FaceColor', 'blue', 'EdgeColor', 'black', 'FaceAlpha', 0.5);
+
+% Plot the core
+patch('Vertices', core_vertices, 'Faces', faces, 'FaceColor', 'yellow', 'EdgeColor', 'black', 'FaceAlpha', 0.5);
+
+% Plot the second facesheet
+patch('Vertices', facesheet2_vertices, 'Faces', faces, 'FaceColor', 'blue', 'EdgeColor', 'black', 'FaceAlpha', 0.5);
+
+% Set the axes properties
+xlabel('Length / mm')
+ylabel('Width / mm')
+zlabel('Height / mm')
+axis equal
+grid on
+view(3)
+
+% Add title
+%title('Composite Sandwich Structure')
+legend('Facesheet', 'Core',Location='northwest')
+betterPlot(composite_structure)
+saveas(composite_structure, "composite_sandwich_structure.png")
+hold off;

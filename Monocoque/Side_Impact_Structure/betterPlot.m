@@ -13,6 +13,7 @@ function [] = betterPlot(figure,lineWidthBool)
     ax.TickLabelInterpreter = "latex";
     ax.XLabel.Interpreter = "latex";
     ax.YLabel.Interpreter = "latex";
+    ax.ZLabel.Interpreter = "latex";
 
     lgd.Interpreter = "latex";
     lgd.FontSize = 13;
