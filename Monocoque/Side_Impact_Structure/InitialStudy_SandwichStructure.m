@@ -183,3 +183,12 @@ legend('Facesheet', 'Core',Location='northwest')
 betterPlot(composite_structure)
 saveas(composite_structure, "composite_sandwich_structure.png")
 hold off;
+
+%% Closing all
+close all
+
+%% Estimation of cost
+cost_per_m2_8552 = 35;% £
+L_test = 600e-3;
+b_test = 275e-3;
+cost_test = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L_test,b_test) * 2% Minus honeycomb and adhesives
