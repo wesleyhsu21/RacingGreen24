@@ -57,6 +57,8 @@ Depth = 0.34;                       % Depth in m facing the car Min 0.2
 Volume = Height * Width * Depth;    % m^3
 Area = Height * Width;
 mass = honeycomb_density * Volume
+cost_per_kg = 51;
+cost = mass * cost_per_kg
 
 %% Energy Absorption
 Specific_Energy_Absorption = epsilon_d * honeycomb_sigma_c_bare;    % Jm^-3
@@ -66,6 +68,9 @@ Energy_Absorbed = (ones * Required_Energy_Absorption) <= Energy_Absorption
 %% Deceleration
 decceleration = Area * honeycomb_sigma_c_bare / m;
 decceleration_boolean = Avg_Deccel >= decceleration
+
+
+
 
 %% Plotting
 dense_strain = 0.69312;

@@ -86,7 +86,7 @@ disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
 delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
 % Know that it deflects before failure
 
-delta_desired = 0.042;
+delta_desired = 0.04;
 F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
 
 Energy_absorbed = delta_desired * F_absorption;
@@ -194,3 +194,5 @@ b_test = 275e-3;
 [cost_test,area_test] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L_test,b_test);% Minus honeycomb and adhesives, 2 halves
 cost_test = cost_test * 2
 area_test = area_test * 2
+
+[cost_SIS,area_SIS] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L,b)
