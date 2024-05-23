@@ -4,7 +4,7 @@ clc
 clear
 
 %syms deltaT
-deltaT = 35;
+deltaT = 18;
 Al_T = 273 + 25 + deltaT;
 air_T = 273 + 25;
 
@@ -18,7 +18,7 @@ A_ts = h_ts * l_ts;
 c_ts = 1044; % heat capacity of battery % from 2023 data
 mass_ts = 25; % mass of battery % rough estimate
 battery_efficiency = 0.95; % 5 percent energy discharge turns into heat
-con_peak_power = 75*1000; % peak power: 124 kW for the EMRAX 228 % continous peak power 75k W % current battery pack max power 70 kW, regulation max 80 kW
+con_peak_power = 40*1000; % peak power: 124 kW for the EMRAX 228 % continous peak power 75k W % current battery pack max power 70 kW, regulation max 80 kW
 
 Q_battery = con_peak_power*(1-battery_efficiency); % heat energy dissapated by battery
 q_ts_one_side = Q_battery/(6*A_ts) % q is W/m^2

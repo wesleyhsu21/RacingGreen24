@@ -21,6 +21,9 @@ fan.diameter = 220e-3; % m
 fan.Vdot = 40.5 * 4.72e-4; % CFM conversion to m^3/s
 fan.velocity = fan.Vdot / (pi * fan.diameter^2 / 4); % Fan velocity calculated from volumetric flow rate
 fan.W_tube = 54.2e-3; % m
+fan.thickness = 15e-3;
+fan.rho = 1250; % PLA
+fan.weightRatio = 0.07 / (80e-3*80e-3*15e-3 * 1250);
 
 %% Radiator parameters: 
 % radiator.m = 2.651; % (kg) Mass of Alphacool Eisbaer Extreme liquid cooler core 280 - black edition
@@ -31,10 +34,13 @@ radiator.height = 105e-3; % height of radiator
 radiator.area = radiator.width * radiator.height; % Modelling for now as rectangular plate
 radiator.vol = radiator.area * radiator.thickness; % Modelling radiator as a cuboid block
 radiator.mass = radiator.rho * radiator.vol;
-radiator.pipe_diameter = 6.35e-3; % m
-radiator.pipe_length = (radiator.width * 2) + (radiator.height / 2); % Length of piping through the radiator (from inlet -> outlet)
+radiator.AR = 2; % width to height ratio
+radiator.pipe.diameter = 6.35e-3; % m
+radiator.pipe.thickness = 0.5e-3; % m (Leo said so)
+radiator.pipe.length = (radiator.width * 2) + (radiator.height / 2); % Length of piping through the radiator (from inlet -> outlet)
+radiator.pipe.rho = 8960; % kg/m^3 of Cu
 radiator.A_ext = radiator.width * radiator.height; % Surface area of external facing plane
-radiator.pipe_A_int = (pi * radiator.pipe_diameter) * radiator.pipe_length; % Internal surface area of total pipe inside radiator
+radiator.pipe.A_int = (pi * radiator.pipe.diameter) * radiator.pipe.length; % Internal surface area of total pipe inside radiator
 
 %% Air parameters: 
 air.T = 25 + 273; % T air at infinity 
@@ -57,7 +63,7 @@ air.h = air.Nu * air.k / fan.W_tube;
 
 %% Motor parameters: 
 % assumption: 6L/min of water at 50°C for a max 120°C motor temperature
-motor.continuous_power = 75 * 1000; % continous power % note: current battery pack has max 73kW
+motor.continuous_power = 35 * 1000; % continous power % note: current battery pack has max 73kW
 motor.efficiency = 0.86; 
 motor.heat = (1 - motor.efficiency) * motor.continuous_power; % W, assuming all wasted energy goes into heat
 
@@ -69,15 +75,15 @@ water.k = 0.64; % W/mK, at 50°C
 water.mu = 5.47e-4; % Pa.s, at 50°C
 water.Pr = 6.977; % Prandtl number
 water.Mflow_rate = water.Vflow_rate * water.rho; % kg/s
-water.ubar = water.Vflow_rate / (pi / 4 * radiator.pipe_diameter^2); % Mean velocity of water flowing through radiator pipe
-water.Re = water.rho * water.ubar * radiator.pipe_diameter / water.mu; 
+water.ubar = water.Vflow_rate / (pi / 4 * radiator.pipe.diameter^2); % Mean velocity of water flowing through radiator pipe
+water.Re = water.rho * water.ubar * radiator.pipe.diameter / water.mu; 
 water.deltaT = motor.heat / water.Cp / water.Mflow_rate; % Temperature rise of coolant
 water.Nu = 0.023 * water.Re^0.8 * water.Pr^0.4; % Nusselt number for water flow
-water.h = water.Nu * water.k / radiator.pipe_diameter; 
+water.h = water.Nu * water.k / radiator.pipe.diameter; 
 
 % Overall heat transfer coefficient
 eta_0 = 0.7; % Hard-coded, ambiguous formula due to lack of radiator fin parameters (Overall surface efficiency)
-U_total = ((1 / (eta_0 * air.h * radiator.A_ext)) + (1 / (water.h * radiator.pipe_A_int)))^-1; % Overall heat transfer coefficient of coolant and airflow
+U_total = ((1 / (eta_0 * air.h * radiator.A_ext)) + (1 / (water.h * radiator.pipe.A_int)))^-1; % Overall heat transfer coefficient of coolant and airflow
 
 %% Other: 
 C_r = air.Cp/water.Cp; 
