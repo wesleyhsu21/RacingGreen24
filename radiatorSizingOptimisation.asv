@@ -87,17 +87,17 @@ radiatorArea = radiatorArea * 100^2; % Conversion from m^2 to cm^2
 disp(['Optimal air velocity for radiator area of 1e-4 m^2: ', num2str(optimal_u_air_array(1)), ' m/s']);
 disp(['Minimum delta_q for radiator area of 1e-4 m^2: ', num2str(min_delta_q_array(1)), ' W']);
 
-% Plotting graphs of CFM vs. Area and CFM vs. Mass
+% Plotting graphs of CFM vs. Mass and CFM vs. 
 figure(1)
 yyaxis left;
-plot(CFM(217:end),radiatorArea(217:end), "-", MarkerSize=12)
-xlabel("Volumetric Flow Rate, CFM $ft^3/min$", "Interpreter", "Latex")
+plot(CFM(217:end),radiatorArea(217:end), "-", "MarkerSize=12")
+xlabel("CFM")
 ylabel("Radiator Area in $cm^2$", "Interpreter", "Latex")
 axis auto
 
 yyaxis right;
-plot(CFM(217:end), radiatorAssembly_total_mass(217:end), "-", MarkerSize=12)
-xlabel("Volumetric Flow Rate, (CFM) $ft^3/min$", "Interpreter", "Latex")
+plot(CFM(217:end), radiatorAssembly_total_mass(217:end), "-", "MarkerSize=12")
+xlabel("CFM")
 ylabel("Radiator Mass in kg", "Interpreter", "Latex")
 axis auto
 legend("Radiator Area, $cm^2$", "Radiator Mass, $kg$", "Interpreter", "Latex")
