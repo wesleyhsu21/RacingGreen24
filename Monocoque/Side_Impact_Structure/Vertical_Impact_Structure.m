@@ -191,6 +191,16 @@ close all
 cost_per_m2_8552 = 35;% £
 L_test = 600e-3;
 b_test = 275e-3;
+S_ref_test = L_test * b_test;
 [cost_test,area_test] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L_test,b_test);% Minus honeycomb and adhesives
 cost_test = cost_test * 2
 area_test = area_test * 2
+
+%% Cockpit
+area_highleg = 2.69;% in m^2
+area_lowleg = 3.26;% in m^2
+ratio_highleg = area_highleg / S_ref_test;% Ratio of areas comparing highleg cockpit SA to test area
+ratio_lowleg = area_lowleg / S_ref_test;% Ratio of areas comaparing lowleg cockpit SA to test area
+
+cost_highleg = cost_test * ratio_highleg;
+cost_lowleg = cost_test * ratio_lowleg;
