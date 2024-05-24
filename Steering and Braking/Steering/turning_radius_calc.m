@@ -9,8 +9,8 @@ clc
 syms x l alpha_max
  
 % Defining constants in equations
-x = 1;
-l = 1.5;
+x = 1.2;
+l = 1.525;
 delta_max = 6;
 heading_angle = 12.3813;%11.23;
 min_radius = min_radius_calc(heading_angle,delta_max,x,l);
