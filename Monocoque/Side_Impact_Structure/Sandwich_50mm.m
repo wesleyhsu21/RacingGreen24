@@ -193,3 +193,5 @@ cost_per_m2_8552 = 35;
 area_covered = L * b;
 mass_per_m2 = mass_total / area_covered
 cost_per_m2 = cost / area_covered
+volume_total = volume_c + volume_fc;
+rho_total = mass_total / volume_total
