@@ -10,7 +10,7 @@ fan = struct();
 radiator = struct();
 motor = struct();
 water = struct(); 
-g = 9.81;
+g = 9.81; 
 
 %% Air parameters: 
 % Assume air at 25°C:
@@ -63,7 +63,7 @@ air.h = air.Nu * air.k / fan.W_tube;
 
 %% Motor parameters: 
 % assumption: 6L/min of water at 50°C for a max 120°C motor temperature
-motor.continuous_power = 35 * 1000; % continous power % note: current battery pack has max 73kW
+motor.continuous_power = 35 * 1000; % continous power % note: current battery pack has max 75kW
 motor.efficiency = 0.86; 
 motor.heat = (1 - motor.efficiency) * motor.continuous_power; % W, assuming all wasted energy goes into heat
 
