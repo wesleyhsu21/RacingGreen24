@@ -1,0 +1,17 @@
+wheel_rad,0.23241
+mass,263
+cog_height,0.33502
+cog_split,0.50151
+cog_LR_split,0.5
+cop_height,0.35745
+cop_split,0.25744
+cop_LR_split,0.5
+wheelbase,1.544
+trackF,1.242
+trackR,1.233
+CLA,-3.229
+CDA,1.3642
+motor_ratio,4.38
+toe,0
+tyre_pressure,10
+IA,0

@@ -1,0 +1,23 @@
+% Specify the file name
+filename = 'CarDatabase.xlsx';
+
+% Specify the sheet name or index (e.g., 'Sheet1' or 1 for the first sheet)
+sheet = 'Optimum Updated';
+
+% Specify the range of data to read (e.g., 'A1:C10' for rows 1 to 10 and columns A to C)
+range = 'A2:J10';
+
+% Read the matrix from the specified sheet and range
+data = readtable(filename, 'Sheet', sheet, 'Range', range);
+
+% Display the data
+disp(data);
+
+figure;
+hold on;
+plot(linspace(0,100,2),linspace(0,100,2),"--b")
+names = strcat("(",data.Var1,") ",data.Var2);
+for i =1:height(names)
+    plot(data.Var5(i),data.Var3(i),'o',Color=i.*ones(1,3)./height(names))
+end
+xlim([min(data.Var5)*0.95,])

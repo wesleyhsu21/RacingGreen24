@@ -1,0 +1,16 @@
+function time = optimiser(params,event)
+% params - [CLA,CDA,Weight]
+% event - race type
+addpath('Coordinates\')
+addpath('GUI data\')
+addpath("Modules\")
+addpath("Objects\")
+addpath("Tires\")
+addpath('PProcessing\')
+npoints = 100;
+carparams = carFsAWD;
+pp=0;
+[sim] = runsim(carparams,npoints,pp,event);
+time = time + sim
+return sim.time()
+end

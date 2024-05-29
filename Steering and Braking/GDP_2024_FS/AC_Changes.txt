@@ -1,0 +1,45 @@
+aero
+- a lot of stuff
+
+car
+- name
+- totalmass
+- inertia?
+- steer lock
+- steer ratio
+- fuel tank pos
+- pickup front height
+- pickup rear height
+
+drivetrain
+- type (AWD RWD FWD)
+- gears count
+- gear ratio (8.2 and 5.21 old)
+
+engine
+- engine limiter (RPM)
+- coast reference
+
+fuel consumption
+- off
+
+power lut
+- rpm vs power
+
+suspension
+- wheelbase
+- cg_location
+- ARB front rear Nm
+- wishbone placement
+- rod length
+- track width
+- static camber
+- a lot more
+
+tyres
+- width
+- radius
+- rim radius
+- damp (damp_T)
+- rate (K_T)
+

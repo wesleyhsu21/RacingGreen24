@@ -1,0 +1,4 @@
+1. Just Floor (sprint: 65.531 accel: 5.1731 skidPad: 4.8581)
+2. Everything complex - Spods (sprint: 68.7224 accel: 5.2709 skidPad: 4.7667)
+3. Complex FW, Simple RW, Floor (sprint: 68.9778 accel: 5.2613 skidPad: 4.7674)
+4. Everything (sprint: 68.7816 accel: 5.2834 skidPad: 4.7682)
