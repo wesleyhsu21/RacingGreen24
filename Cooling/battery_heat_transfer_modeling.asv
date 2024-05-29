@@ -90,26 +90,24 @@ eqn = q_ts_one_side - q_conv - q_cond_total - q_rad
 TSAC_tube_D = 0.0127;
 radiator.pipe.diameter = TSAC_tube_D;
 water.Cp = 4184; % J/kgK, heat capacity of water 
-water.Vflow_rate = 3 / 60000; % m^3/s, converting from L/min to m^3/s
+water.Vflow_rate = 1 / 60000; % m^3/s, converting from L/min to m^3/s
 water.rho = 997; 
 water.k = 0.614; % W/mK, at 30°C at 1 bar
 water.mu = 7.97e-4; % Pa.s, at 30°C at 1 bar
-water.Pr = water.mu*water.Cp/water.k; %6.977; % Prandtl number
+water.Pr = 6.977; % Prandtl number
 water.Mflow_rate = water.Vflow_rate * water.rho; % kg/s
 water.ubar = water.Vflow_rate / (pi / 4 * radiator.pipe.diameter^2); % Mean velocity of water flowing through radiator pipe
-water.Re = water.rho * water.ubar * radiator.pipe.diameter / water.mu
+water.Re = water.rho * water.ubar * radiator.pipe.diameter / water.mu; 
 water.deltaT = Q_battery / water.Cp / water.Mflow_rate; % Temperature rise of coolant
 water.Nu = 0.023 * water.Re^0.8 * water.Pr^0.4; % Nusselt number for water flow
 water.h = water.Nu * water.k / radiator.pipe.diameter; 
-
-pipe_friction = 64/water.Re % laminar : Re< 1000
 
 %%
 copper_k = 401; %401;
 % assuming 1/2 inch Diameter copper tube
 % need 186*3 LiPo batteries 2023 HEV 23 (sizing batteries)
 
-TSAC_tube_D = 0.0127*0.5;
+TSAC_tube_D = 0.0127;
 TSAC_tube_Circumferece = (TSAC_tube_D)*pi; %circumference
 
 TSAC_tube_length = q_ts_one_side/copper_k/deltaT/TSAC_tube_Circumferece;
