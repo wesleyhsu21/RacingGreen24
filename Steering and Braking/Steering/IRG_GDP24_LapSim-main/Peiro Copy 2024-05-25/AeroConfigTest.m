@@ -1,0 +1,111 @@
+clc;
+clear;
+tic;
+
+addpath('Coordinates\')
+addpath('GUI data\')
+addpath("Modules\")
+addpath("Objects\")
+addpath("Tires\")
+addpath('PProcessing\')
+addpath('configs\')
+
+fprintf('Simulations is initiated \n')
+%npoints = input('Please give number of track subdivisions, ');
+
+
+pp = 0; %Set to 1 for post-processing
+n_configs = 36;
+points = zeros(1,n_configs);
+accelTimes = zeros(1,n_configs); 
+sprintTimes = zeros(1, n_configs); 
+skidPadTimes = zeros(1, n_configs);
+accelPoints = zeros(1,n_configs); 
+sprintPoints = zeros(1, n_configs); 
+skidPadPoints = zeros(1, n_configs);
+weights = zeros(1, n_configs); 
+cla = zeros(1, n_configs); 
+cda = zeros(1, n_configs);
+
+parfor i = 1:n_configs
+
+    filename = ['configs/config_', num2str(i), '.csv'];
+    data = readCSVConfig(filename);
+    weights(i) = data.Var2(data.Var1=="mass");
+    cla(i) = data.Var2(data.Var1=="CLA");
+    cda(i) = data.Var2(data.Var1=="CDA");
+    carparams = carFsConfig(filename);
+    carparamsaccel = carFsConfigAccel(filename);
+
+    simSprint = runsim(carparams, 4000, pp, 1);
+    simAccel = runsim(carparamsaccel, 4000, pp, 2);
+    simSPad = runsim(carparams, 10000, pp, 3);
+    
+    if simSprint.error==""&&simAccel.error==""&&simSPad.error==""
+    sprintTime = simSprint.time(end); 
+    accelTime = simAccel.time(end);
+
+    start1 = find(simSPad.x>23.8258);
+    start1 = start1(1);
+    end1 = find(simSPad.x<25.199);
+    end1 = end1(end);
+    skidPadTime=(simSPad.time(end1)-simSPad.time(start1))/4;
+
+    accelTimes(i) = accelTime; 
+    sprintTimes(i) = sprintTime;
+    skidPadTimes(i) = skidPadTime;
+
+    % skidPadMin = 5.52;
+    % skidPadMax = 1.25*skidPadMin;
+    % skidPadPoints(i) = 70*((skidPadMax/skidPadTime)^2 - 1)/((skidPadMax/skidPadMin)^2 - 1);
+
+    % accelMin = 4.17; 
+    % accelMax = 1.5*accelMin; 
+    % accelPoints(i) = 65*(accelMax/accelTime -1)/(accelMax/accelMin - 1);
+
+    % sprintMin = 63.7; 
+    % sprintMax = 1.45*sprintMin;
+    % sprintPoints(i) = 95*(sprintMax/sprintTime -1)/(sprintMax/sprintMin - 1);
+    % 
+    % totalPoints = skidPadPoints(i) + accelPoints(i) + sprintPoints(i);
+    % points(i) = totalPoints;
+    end
+
+end
+skidPadMin = 5.806;
+accelMin = 4.281; 
+ sprintMin = 63.692;
+sprintPoints = 95.*(1.45.*min([sprintTimes(sprintTimes~=0),sprintMin])./sprintTimes -1)./(1.45 - 1);
+accelPoints = 65.*(1.5.*min([accelTimes(accelTimes~=0),accelMin])./accelTimes -1)./(1.5 - 1);
+skidPadPoints = 70.*(((1.25.*min([skidPadTimes(skidPadTimes~=0),skidPadMin]))./skidPadTimes).^2 -1)./(1.25^2 - 1);
+
+sprintPoints(sprintPoints>1e9) = 0;
+sprintPoints(sprintPoints<=0) = 0;
+accelPoints(accelPoints>1e9) = 0;
+accelPoints(accelPoints<=0) = 0;
+skidPadPoints(skidPadPoints>1e9) = 0;
+skidPadPoints(skidPadPoints<=0) = 0;
+
+points = skidPadPoints+accelPoints+sprintPoints;
+% Rank the configurations based on points
+[sortedPoints, sortIdx] = sort(points, 'descend');
+% Print the configurations in descending order of points
+fprintf('Ranked Configurations:\n');
+fprintf('Rank\tConfig\tSkidLap\t\tAccelLap\tSprintLap\tSkidPts\t\tAccelPts\tSprintPts\tPoints\n');
+for rank = 1:n_configs
+    fprintf('%d\t\t%d\t\t%.4f\t\t%.4f\t\t%.4f\t\t%.4f\t\t%.4f\t\t%.4f\t\t%.4f\n', rank, sortIdx(rank),skidPadTimes(sortIdx(rank)),accelTimes(sortIdx(rank)),sprintTimes(sortIdx(rank)),skidPadPoints(sortIdx(rank)),accelPoints(sortIdx(rank)),sprintPoints(sortIdx(rank)), sortedPoints(rank));
+end
+figure;
+scatter3(cla(points>0),cda(points>0),weights(points>0),200,points(points>0),'filled','o')
+% xlabel('Coefficient of Lift * Area,$SC_L$, [$m^2$]')
+% ylabel('Coefficient of Drag * Area,$SC_D$, [$m^2$]')
+% zlabel('Weight,$W$, [$kg$]')
+xlabel('$SC_L$, [$m^2$]')
+ylabel('$SC_D$, [$m^2$]')
+zlabel('$W$, [$kg$]')
+prettier()
+cb = colorbar;
+
+fprintf('Simulation is done \n')
+
+toc;
