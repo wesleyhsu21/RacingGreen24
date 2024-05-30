@@ -22,3 +22,6 @@ hold off
 betterPlot(XYPlot)
 legend("off")
 saveas(XYPlot, figName)
+
+%% Area under
+area = trapz(x,y) * 1e-3
