@@ -242,6 +242,7 @@ view(3)
 
 % Add title
 %title('Comparison of Impact Attenuator Geometries')
+grid on
 betterPlot(IAgeometry_comparison)
 legend('Actual Geometry', 'Minimum Geometry',Location='northwest')
 %legend("off")
