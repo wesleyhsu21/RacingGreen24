@@ -1,4 +1,4 @@
-function [] = MSFTFailure(LocalStress_45,LocalStress_90,LocalStress_0)
+function [] = MSFTFailure_Woven(LocalStress_45,LocalStress_90,LocalStress_0)
 % Function to determine if, where and how a ply fails
 %
 % Inputs:
@@ -6,11 +6,11 @@ function [] = MSFTFailure(LocalStress_45,LocalStress_90,LocalStress_0)
 % LocalStress_90    = Local Stress in the 90 deg plies
 % LocalStress_0     = Local Stress in the 0 deg plies
 
-sigma_11c_crit = 1.780e9;   % Critical 11 compressive stress [Pa]
-sigma_11t_crit = 2.811e9;   % Critical 11 tensile stress [Pa]
-sigma_22t_crit = 7.56e7;    % Critical 22 tensile stress [Pa]
-sigma_22c_crit = 1.78e8;    % Critical 22 compressive stress [Pa]
-tau_12_crit = 0.1143e9;     % Critical 12 shear stress [Pa]
+sigma_11c_crit = 615e6;   % Critical 11 compressive stress [Pa]
+sigma_11t_crit = 645e6;   % Critical 11 tensile stress [Pa]
+sigma_22t_crit = 645e6;    % Critical 22 tensile stress [Pa]
+sigma_22c_crit = 615e6;    % Critical 22 compressive stress [Pa]
+tau_12_crit = 69.8e6;     % Critical 12 shear stress [Pa]
 
 if LocalStress_45(1) < 0
     if LocalStress_45(1) < -sigma_11c_crit

@@ -1,4 +1,4 @@
-function[A, B, D, ABD, Q, thickness] = ABD(layup_s)
+function[A, B, D, ABD, Q, thickness] = ABD_Woven(layup_s)
 % Function to calculate the ABD matrix of an IM7/8552 laminate from the
 % symmetric layup. Adapted from Sujit
 % Inputs:
