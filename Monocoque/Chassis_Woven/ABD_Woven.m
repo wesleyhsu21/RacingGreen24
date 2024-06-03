@@ -23,10 +23,10 @@ for i = 1:Nplies
   zbar(i) = - (h + t)/2 + i*t;
 end
 
-% Ply engineering properties (AS/3501)
-E1   = 1.63e11; % Pa
+% Ply engineering properties XC130
+E1   = 55.2e9; % Pa
 nu12 = 0.32 ;
-E2   = 1e10  ; % Pa
+E2   = 55.2e9; % Pa
 G12  = 5.59e9  ; % Pa
 nu21 = nu12 * E2 / E1 ;
 
