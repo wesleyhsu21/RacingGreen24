@@ -23,19 +23,13 @@ layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 45 0];
 L = 1500e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
 c = 40e-3;% Thickness of the foam core
-%% Orthoropic approximation
-F = 7500;% Force in N
 
-b_adapted = 0.05; %A
-
-E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
-E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
 %% Dimensions and properties
 E_c = psiToPa(65e3);% Modulus of the foam core in Pa
 d = c + thickness_0;
 G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
 sigma_critical_fc = 1.780e9;% Compressive composite facesheet failure stress in Pa
-tau_critical_glue = 60e6;% Glue delamination stress
+tau_critical_glue = 25e6;% Glue delamination stress
 tau_critical_core = psiToPa(360);% Critical core shear stress
 sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
 rho_fc = 1570;% Facesheet density in kgm^-3
@@ -46,6 +40,14 @@ volume_c = c * b * L;% Volume in m^3
 mass_c = volume_c * rho_c;% Mass in kg
 mass_total = mass_fc + mass_c %Total mass per side in kg
 thickness_total = c + 2 * thickness_0
+
+%% Orthoropic approximation
+F = 7500;% Force in N
+
+b_adapted = 0.05; %A
+
+E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
+E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
 %% Dimensionless quantities
 tbar = thickness_0 / c;
 cbar = c / L;
@@ -86,10 +88,10 @@ disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
 delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
 % Know that it deflects before failure
 
-delta_desired = 0.04;
+delta_desired = 0.06;
 F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
 
-Energy_absorbed = delta_desired * F_absorption;
+Energy_absorbed = delta_desired * F_absorption / 2;
 
 %% Steel absorption
 E_steel = 2e11;
@@ -183,6 +185,9 @@ legend('Facesheet', 'Core',Location='northwest')
 betterPlot(composite_structure)
 saveas(composite_structure, "composite_sandwich_structure.png")
 hold off;
+
+%% Force deflection graph
+
 
 %% Closing all
 close all
