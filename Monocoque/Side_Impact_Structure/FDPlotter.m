@@ -12,20 +12,22 @@ load(matName)
 x = ThreePointBend.TestData(:,1)
 y = ThreePointBend.TestData(:,2)
 
+x_theory = [0 3036]
+y_theory = [0 50]
+
 
 XYPlot = figure;
 plot(x,y)
 hold on
+plot(x_theory,y_theory)
 xlabel(xLab)
 ylabel(yLab)
 hold off
 betterPlot(XYPlot)
-legend("off")
+legend('FEA','Theoretical',Location='southeast')
 saveas(XYPlot, figName)
 
 %% Area under
 area = trapz(x,y) * 1e-3
-
-%% Calculating the gradient (dy/dx)
 
 close all
