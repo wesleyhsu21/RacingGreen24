@@ -17,19 +17,25 @@ close all
 % through the other facesheet
 
 %% Facesheet layup
-layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 45 0];
+layup_iteration_0_s = [0 -45 45 0 90 0];
 [A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
 
 L = 1500e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
 c = 40e-3;% Thickness of the foam core
+%% Orthoropic approximation
+F = 7500;% Force in N
 
+b_adapted = 0.05; %A
+
+E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
+E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
 %% Dimensions and properties
 E_c = psiToPa(65e3);% Modulus of the foam core in Pa
 d = c + thickness_0;
 G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
 sigma_critical_fc = 1.780e9;% Compressive composite facesheet failure stress in Pa
-tau_critical_glue = 25e6;% Glue delamination stress
+tau_critical_glue = 60e6;% Glue delamination stress
 tau_critical_core = psiToPa(360);% Critical core shear stress
 sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
 rho_fc = 1570;% Facesheet density in kgm^-3
@@ -40,14 +46,6 @@ volume_c = c * b * L;% Volume in m^3
 mass_c = volume_c * rho_c;% Mass in kg
 mass_total = mass_fc + mass_c %Total mass per side in kg
 thickness_total = c + 2 * thickness_0
-
-%% Orthoropic approximation
-F = 7500;% Force in N
-
-b_adapted = 0.05; %A
-
-E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
-E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
 %% Dimensionless quantities
 tbar = thickness_0 / c;
 cbar = c / L;
@@ -108,7 +106,7 @@ area_tubes = area_single * no_tubes;
 strain_y_steel = sigma_y_steel / E_steel;
 Energy_absorbed_steel = (strain_y_steel * sigma_y_steel / 2) * area_tubes * L;
 %% Test
-required_EI = 3.4067e+03
+required_EI = 3.4067e+03 / 2
 EI_sw
 
 % Deflects at delta_desired, absorbs more energy assuming linear elasticity
@@ -186,21 +184,14 @@ betterPlot(composite_structure)
 saveas(composite_structure, "composite_sandwich_structure.png")
 hold off;
 
-%% Force deflection graph
-
-
 %% Closing all
 close all
 
-%% Estimation of cost
-cost_per_m2_8552 = 35;% £
-L_test = 600e-3;
-b_test = 275e-3;
-[cost_test,area_test] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L_test,b_test);% Minus honeycomb and adhesives, 2 halves
-cost_test = cost_test * 2
-area_test = area_test * 2
-
+%% Cost per m2 composite
+cost_per_m2_8552 = 35;
 [cost,~] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L,b);% Minus honeycomb and adhesives, 2 halves
 area_covered = L * b;
 mass_per_m2 = mass_total / area_covered
 cost_per_m2 = cost / area_covered
+volume_total = volume_c + volume_fc;
+rho_total = mass_total / volume_total
