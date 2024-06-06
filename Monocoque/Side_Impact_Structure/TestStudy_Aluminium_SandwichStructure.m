@@ -195,5 +195,6 @@ close all
 %% Estimation of cost
 
 cost_per_kg=0.4; %pounds/kilo
+area_covered = L * b;
 mass_per_m2=thickness_0*2*rho_fc+c*rho_c
-cost_per_m2=thickness_0*2*rho_fc*mass_per_m2
+cost_per_m2=thickness_0*2*rho_fc*mass_per_m2 + mass_c * 51 / area_covered
