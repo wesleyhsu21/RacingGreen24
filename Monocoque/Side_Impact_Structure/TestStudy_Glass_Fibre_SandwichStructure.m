@@ -17,7 +17,7 @@ close all
 % through the other facesheet
 
 %% Facesheet layup
-layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 45 0];
+layup_iteration_0_s = [0 0 90 -45 45 0];
 [A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD_GFRP(layup_iteration_0_s);
 
 L = 1500e-3;% Length of the structure in m
@@ -29,11 +29,11 @@ E_c = psiToPa(65e3);% Modulus of the foam core in Pa
 E=39.3e9;
 d = c + thickness_0;
 G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
-sigma_critical_fc = 345e6;% Compressive composite facesheet failure stress in Pa
+sigma_critical_fc = 615e6;% Compressive composite facesheet failure stress in Pa
 tau_critical_glue = 25e6;% Glue delamination stress
 tau_critical_core = psiToPa(360);% Critical core shear stress
 sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
-rho_fc = 1790;% Facesheet density in kgm^-3
+rho_fc = 2530;% Facesheet density in kgm^-3
 rho_c = 83.3;% Core density in kgm^-3
 volume_fc = thickness_0 * b * L;% Volume in m^3
 mass_fc = volume_fc * rho_fc;% Mass in kg
