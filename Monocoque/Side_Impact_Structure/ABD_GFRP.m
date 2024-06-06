@@ -13,7 +13,7 @@ function[A, B, D, ABD, Q, thickness] = ABD(layup_s)
 thetadb = [layup_s flip(layup_s)];
 Nplies = length(thetadb);
 
-t = 0.3e-3;
+t = 0.25e-3;
 thickness = t * Nplies;
 h      = Nplies * t ;
 

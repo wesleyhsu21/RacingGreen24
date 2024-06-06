@@ -17,12 +17,12 @@ close all
 % through the other facesheet
 
 %% Facesheet layup
-layup_iteration_0_s = [0 -45 45 0 90 0];
+layup_iteration_0_s = [90 0 -45 45 0 -45 45 0 0 90 -45 45 0 0];
 [A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
 
 L = 780e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
-c = 25e-3;% Thickness of the foam core
+c = 50e-3;% Thickness of the foam core
 
 %% Dimensions and properties
 E_c = psiToPa(65e3);% Modulus of the foam core in Pa
@@ -108,7 +108,7 @@ area_tubes = area_single * no_tubes;
 strain_y_steel = sigma_y_steel / E_steel;
 Energy_absorbed_steel = (strain_y_steel * sigma_y_steel / 2) * area_tubes * L;
 %% Test
-required_EI = 3.4067e+03
+required_EI = 3.4067e+03 * 3
 EI_sw
 
 % Deflects at delta_desired, absorbs more energy assuming linear elasticity
