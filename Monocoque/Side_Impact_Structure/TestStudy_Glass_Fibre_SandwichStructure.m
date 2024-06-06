@@ -18,23 +18,22 @@ close all
 
 %% Facesheet layup
 layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 45 0];
-[A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
+[A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD_GFRP(layup_iteration_0_s);
 
-thickness_0=4.5e-3;
 L = 1500e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
 c = 50e-3;% Thickness of the foam core
 
 %% Dimensions and properties
 E_c = psiToPa(65e3);% Modulus of the foam core in Pa
-E=69e9;
+E=39.3e9;
 d = c + thickness_0;
 G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
-sigma_critical_fc = 40e6;% Compressive composite facesheet failure stress in Pa
+sigma_critical_fc = 345e6;% Compressive composite facesheet failure stress in Pa
 tau_critical_glue = 25e6;% Glue delamination stress
 tau_critical_core = psiToPa(360);% Critical core shear stress
 sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
-rho_fc = 2700;% Facesheet density in kgm^-3
+rho_fc = 1790;% Facesheet density in kgm^-3
 rho_c = 83.3;% Core density in kgm^-3
 volume_fc = thickness_0 * b * L;% Volume in m^3
 mass_fc = volume_fc * rho_fc;% Mass in kg
@@ -193,7 +192,14 @@ hold off;
 close all
 
 %% Estimation of cost
+cost_per_m2_8552 = 25;% £
+L_test = 600e-3;
+b_test = 275e-3;
+[cost_test,area_test] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L_test,b_test);% Minus honeycomb and adhesives, 2 halves
+cost_test = cost_test * 2
+area_test = area_test * 2
 
-cost_per_kg=0.4; %pounds/kilo
-mass_per_m2=thickness_0*2*rho_fc+c*rho_c
-cost_per_m2=thickness_0*2*rho_fc*mass_per_m2
+[cost,~] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L,b);% Minus honeycomb and adhesives, 2 halves
+area_covered = L * b;
+mass_per_m2 = mass_total / area_covered
+cost_per_m2 = cost / area_covered
