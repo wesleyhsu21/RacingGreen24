@@ -22,7 +22,7 @@ layup_iteration_0_s = [0 0 90 -45 45 0];
 
 L = 1500e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
-c = 50e-3;% Thickness of the foam core
+c = 10e-3;% Thickness of the foam core
 
 %% Dimensions and properties
 E_c = psiToPa(65e3);% Modulus of the foam core in Pa
