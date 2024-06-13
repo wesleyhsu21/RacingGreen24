@@ -190,6 +190,7 @@ close all
 %% Cost per m2 composite
 cost_per_m2_8552 = 35;
 [cost,~] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L,b);% Minus honeycomb and adhesives, 2 halves
+cost = cost + mass_c * 51;
 area_covered = L * b;
 mass_per_m2 = mass_total / area_covered
 cost_per_m2 = cost / area_covered

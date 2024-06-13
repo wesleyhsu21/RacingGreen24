@@ -17,10 +17,10 @@ close all
 % through the other facesheet
 
 %% Facesheet layup
-layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 45 0];
+layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 +45 0];
 [A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
 
-L = 1500e-3;% Length of the structure in m
+L = 780e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
 c = 40e-3;% Thickness of the foam core
 
@@ -201,6 +201,7 @@ cost_test = cost_test * 2
 area_test = area_test * 2
 
 [cost,~] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L,b);% Minus honeycomb and adhesives, 2 halves
+cost = cost + mass_c * 51;
 area_covered = L * b;
 mass_per_m2 = mass_total / area_covered
 cost_per_m2 = cost / area_covered

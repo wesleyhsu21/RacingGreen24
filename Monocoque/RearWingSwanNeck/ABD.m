@@ -13,7 +13,7 @@ function[A, B, D, ABD, Q, thickness] = ABD(layup_s)
 thetadb = [layup_s flip(layup_s)];
 Nplies = length(thetadb);
 
-t = 0.25e-3;
+t = 0.131e-3;
 thickness = t * Nplies;
 h      = Nplies * t ;
 
@@ -24,10 +24,10 @@ for i = 1:Nplies
 end
 
 % Ply engineering properties (AS/3501)
-E1   = 55.2e9; % Pa
-nu12 = 0.32;
-E2   = 55.2e9; % Pa
-G12  = 3e9  ; % Pa
+E1   = 1.63e11; % Pa
+nu12 = 0.32 ;
+E2   = 1e10  ; % Pa
+G12  = 5.59e9  ; % Pa
 nu21 = nu12 * E2 / E1 ;
 
 a1 = -1e-7 ; % coefficients of thermal expansion
