@@ -22,7 +22,7 @@ layup_iteration_0_s = [0 0 90 0 0 -45 45 0 0 -45 45 90];
 
 L = 1500e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
-c = 30e-3;% Thickness of the foam core
+c = 50e-3;% Thickness of the foam core
 %% Orthoropic approximation
 F = 7500;% Force in N
 

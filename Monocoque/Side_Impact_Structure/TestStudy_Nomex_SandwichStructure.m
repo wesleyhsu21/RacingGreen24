@@ -17,24 +17,23 @@ close all
 % through the other facesheet
 
 %% Facesheet layup
-layup_iteration_0_s = [0 0 90 -45 45 0];
-[A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD_GFRP(layup_iteration_0_s);
+layup_iteration_0_s = [0 0 90 0 -45 45 0 -45 +45 0];
+[A_0, B_0, D_0, ABD_0, Q_0, thickness_0] = ABD(layup_iteration_0_s);
 
-L = 1500e-3;% Length of the structure in m
+L = 780e-3;% Length of the structure in m
 b = 300e-3;% Depth of the beam, i.e. about the axis of bending in m
-c = 15The-3;% Thickness of the foam core
+c = 55e-3;% Thickness of the foam core
 
 %% Dimensions and properties
-E_c = psiToPa(65e3);% Modulus of the foam core in Pa
-E=39.3e9;
+E_c = 140e6;% Modulus of the foam core in Pa
 d = c + thickness_0;
-G_c = psiToPa(35e3);% Shear modulus of the foam core in Pa
-sigma_critical_fc = 615e6;% Compressive composite facesheet failure stress in Pa
+G_c = 40e6;% Shear modulus of the foam core in Pa
+sigma_critical_fc = 1.780e9;% Compressive composite facesheet failure stress in Pa
 tau_critical_glue = 25e6;% Glue delamination stress
-tau_critical_core = psiToPa(360);% Critical core shear stress
-sigma_critical_core = psiToPa(625);% Critical stress same due to isotropic
-rho_fc = 2530;% Facesheet density in kgm^-3
-rho_c = 83.3;% Core density in kgm^-3
+tau_critical_core = 0.5e6;% Critical core shear stress
+sigma_critical_core = 0.5e6;% Critical stress same due to isotropic
+rho_fc = 1570;% Facesheet density in kgm^-3
+rho_c = 48;% Core density in kgm^-3
 volume_fc = thickness_0 * b * L;% Volume in m^3
 mass_fc = volume_fc * rho_fc;% Mass in kg
 volume_c = c * b * L;% Volume in m^3
@@ -47,16 +46,18 @@ F = 7500;% Force in N
 
 b_adapted = 0.05; %A
 
+E_f_x = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(1,1) / b_adapted;
+E_f_y = (1 - A_0(1,2)^2 / (A_0(2,2) * A_0(1,1))) * A_0(2,2) / b_adapted;
 %% Dimensionless quantities
 tbar = thickness_0 / c;
 cbar = c / L;
 sigmabar = sigma_critical_fc / sigma_critical_core;
 taubar = tau_critical_core / sigma_critical_fc;
-Ebar = E / sigma_critical_fc;
+Ebar = E_f_x / sigma_critical_fc;
 Fbar = F / (b * L * sigma_critical_fc);
 
 %% Equivalent bending stiffness
-EI_sw = (E * b * thickness_0 * d^2 / 2) + (E * b * thickness_0^3 / 6) + (E_c * b * c^3 / 12);
+EI_sw = (E_f_x * b * thickness_0 * d^2 / 2) + (E_f_x * b * thickness_0^3 / 6) + (E_c * b * c^3 / 12);
 
 %% Equivalent shear stiffness
 AG_sw = b * c * G_c;
@@ -76,7 +77,7 @@ F_critical_glue = 2 * b * d * tau_critical_glue;
 F_critical_CS = 2 * b * d * tau_critical_core;
 
 %% Indentation failure
-F_critical_indentation = b * thickness_0 * ((pi^2 * d * E * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
+F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
 
 %% Min Force for failure
 [minload,i_minload] = min([F_critical_facesheet F_critical_glue F_critical_CS F_critical_indentation]);
@@ -87,10 +88,10 @@ disp(['Fails in ' failuremode(i_minload) ' at ' minload ' N'])
 delta_fail = (minload * L^3) / (48 * EI_sw) + (minload * L) / (4 * AG_sw);% Approximate deflection in m
 % Know that it deflects before failure
 
-delta_desired = 0.06;
+delta_desired = 0.05;
 F_absorption = delta_desired / ((L^3) / (48 * EI_sw) + (L) / (4 * AG_sw));
 
-Energy_absorbed = delta_desired * F_absorption / 2;
+Energy_absorbed = delta_desired * F_absorption;
 
 %% Steel absorption
 E_steel = 2e11;
@@ -192,7 +193,7 @@ hold off;
 close all
 
 %% Estimation of cost
-cost_per_m2_8552 = 25;% £
+cost_per_m2_8552 = 35;% £
 L_test = 600e-3;
 b_test = 275e-3;
 [cost_test,area_test] = composite_cost(layup_iteration_0_s,cost_per_m2_8552,L_test,b_test);% Minus honeycomb and adhesives, 2 halves

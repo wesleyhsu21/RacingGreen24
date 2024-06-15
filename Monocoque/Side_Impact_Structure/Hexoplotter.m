@@ -3,10 +3,10 @@ clc
 close all
 
 % Define parameters
-L = 1.5; % Length in meters
+L = 780e-3; % Length in meters
 W = 300; % Width in mm
-t = 0.00262; % Thickness of facesheet in meters
-c = 40;  % Thickness of core in mm
+t = 0.001572; % Thickness of facesheet in meters
+c = 52;  % Thickness of core in mm
 cell_size = 6.4; % Size of hexagonal cell in mm
 wall_thickness = 0.07; % Wall thickness of hexagonal cell in mm
 
@@ -65,6 +65,7 @@ view(3)
 % Add title
 %title('Composite Sandwich Structure with Hexagonal Core')
 betterPlot(composite_structure)
+zlim([0,80]);
 legend("off")
 hold off;
 
