@@ -75,7 +75,7 @@ F_critical_glue = 2 * b * d * tau_critical_glue;
 F_critical_CS = 2 * b * d * tau_critical_core;
 
 %% Indentation failure
-F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (2/3);
+F_critical_indentation = b * thickness_0 * ((pi^2 * d * E_f_x * sigma_critical_fc ^ 2) / (3 * L)) ^ (1[/3);
 
 %% Min Force for failure
 [minload,i_minload] = min([F_critical_facesheet F_critical_glue F_critical_CS F_critical_indentation]);

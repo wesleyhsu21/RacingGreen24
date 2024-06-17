@@ -1,5 +1,5 @@
 % function total_wire_lengths = calculate_wire_lengths()
-% % Calculate Wire Lengths for IRG24
+% % Calculate Wire Lengths for IRG25
 clear
 clc
 % Component Positions 
